@@ -23,7 +23,7 @@ tisch1.UpdateEntryQuantity(kaffee.Uuid, 2);
 
 Console.WriteLine($"Warenkorb erstellt. Anzahl Artikel: {tisch1.Count}");
 
-string lastHash = "0000000000000000"; 
+const string lastHash = "0000000000000000"; 
 var finalTransaction = engine.CreateTransaction(tisch1, lastHash);
 
 Console.WriteLine("--- KASSENBON ---");
