@@ -7,7 +7,7 @@ var inventory = new Inventory();
 var engine = new PosEngine(catalog, inventory);
 
 var kaffee = new Product 
-{ 
+{
     Uuid = Guid.CreateVersion7(), 
     Sku = "KAF-01", 
     Name = "Espresso", 
