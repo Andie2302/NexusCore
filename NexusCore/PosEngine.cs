@@ -13,10 +13,12 @@ public class PosEngine
         _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
     }
 
-    public Transaction CreateTransaction(ProductCart cart, string previousHash)
+    public Transaction CreateTransaction(ProductCart cart, TransactionHistory history)
     {
         ArgumentNullException.ThrowIfNull(cart);
-        previousHash ??= string.Empty;
+        ArgumentNullException.ThrowIfNull(history);
+
+        var previousHash = history.GetLastHash();
 
         var transaction = new Transaction
         {
@@ -41,7 +43,11 @@ public class PosEngine
             _inventory.UpdateEntryQuantity(product.Uuid, newStock);
         }
 
-        transaction.CurrentReceiptHash = ReceiptHashPrefix + transaction.Id;
+        string rawData = $"{transaction.PreviousReceiptHash}|{transaction.Timestamp:O}|{transaction.GrandTotal}";
+        transaction.CurrentReceiptHash = SecurityHelper.CalculateSha256(rawData);
+
+        history.Add(transaction);
+
         return transaction;
     }
 
