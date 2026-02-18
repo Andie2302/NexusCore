@@ -1,15 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using NexusCore;
+﻿using NexusCore;
 
 Console.WriteLine("Hello, World!");
 
-// 1. Setup des Systems
 var catalog = new ProductCatalog();
 var inventory = new Inventory();
 var engine = new PosEngine(catalog, inventory);
 
-// 2. Stammdaten anlegen
 var kaffee = new Product 
 { 
     Uuid = Guid.CreateVersion7(), 
@@ -20,21 +16,16 @@ var kaffee = new Product
 };
 catalog.AddProduct(kaffee);
 
-// 3. Lager füllen
 inventory.UpdateEntryQuantity(kaffee.Uuid, 100);
 
-// 4. Ein Verkaufsvorgang (Warenkorb)
 var tisch1 = new ProductCart();
-tisch1.UpdateEntryQuantity(kaffee.Uuid, 2); // Kunde möchte 2 Espresso
+tisch1.UpdateEntryQuantity(kaffee.Uuid, 2);
 
 Console.WriteLine($"Warenkorb erstellt. Anzahl Artikel: {tisch1.Count}");
 
-// 5. Checkout (Snapshot erstellen)
-// Wir nehmen einen Dummy-Hash für den ersten Bon
 string lastHash = "0000000000000000"; 
 var finalTransaction = engine.CreateTransaction(tisch1, lastHash);
 
-// 6. Ergebnis prüfen
 Console.WriteLine("--- KASSENBON ---");
 Console.WriteLine($"Datum: {finalTransaction.Timestamp}");
 Console.WriteLine($"Beleg-ID: {finalTransaction.Id}");
