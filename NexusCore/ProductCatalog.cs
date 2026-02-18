@@ -9,7 +9,6 @@ public class ProductCatalog
     {
         ValidateProduct(product);
 
-        // Ensure SKU map stays consistent if the same UUID is re-added with a different SKU.
         if (_productsByUuid.TryGetValue(product.Uuid, out var existing))
             _uuidBySku.Remove(existing.Sku);
 
